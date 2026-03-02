@@ -23,6 +23,28 @@ Produce all of the following in one flow:
 - Avoid asking implementation-detail questions unless they change product intent.
 - Infer technical defaults and execute.
 
+## Start from a Template (Fastest Path)
+
+Before going through the full from-scratch workflow below, first call `list_templates` to check whether a pre-built template already covers the use case.
+
+**Template workflow:**
+
+1. `list_templates` -- discover available templates; each result includes a `slug`, `name`, and `use_case` description
+2. `provision_template(slug)` -- creates a private dataset copy for the user with pre-labeled rows and judgment configs already configured; returns `{ dataset_id }`
+3. `create_and_deploy_evaluation(dataset_id)` -- deploys the live eval from that dataset; capture the returned `api_key` immediately (it is only shown once)
+4. `run_eval` with `live_evaluation_id` and `inputs` -- start scoring right away
+
+**Available templates** (as of early 2026):
+
+- AI Writing Detection: `ai-vocabulary-overuse`, `em-dash-overuse`
+- Code Quality: `function-naming`, `variable-naming`
+
+The provisioned dataset is the user's own private copy -- they can add rows, tweak judgment criteria, and redeploy at any time to customize.
+
+If no template matches the use case, proceed with the full from-scratch workflow below.
+
+---
+
 ## Scoping workflow (high-information questions only)
 
 Ask questions that define quality, not plumbing. Cover:

@@ -10,6 +10,9 @@ description: Orchestration playbook for the Truesight MCP. Use when scoring inpu
 **Are you building a new live evaluation from scratch?**
 - Yes -> use the `create-evaluation` skill instead of this one.
 
+**Do you want to get started quickly using a pre-built eval template?**
+- Yes -> Workflow D below.
+
 **Are you scoring inputs against an existing live evaluation?**
 - Yes -> Workflow A below.
 
@@ -169,6 +172,17 @@ After promoting, consider re-running evaluations on the updated dataset to measu
 
 ---
 
+## Workflow D: Template Path (Fastest Route to a Live Eval)
+
+Use when the user wants to get started quickly using a pre-built eval template.
+
+1. `list_templates` -- discover available templates; each result includes a `slug`, `name`, and `use_case` description
+2. `provision_template` -- pass `slug: "em-dash-overuse"` (or whichever template matches the use case); returns `{ dataset_id }`
+3. `create_and_deploy_evaluation` -- pass `dataset_id` from step 2; returns `{ live_evaluation_id, api_key }` -- capture `api_key` immediately, it is only shown once
+4. `run_eval` -- pass `live_evaluation_id` and `inputs` to start scoring content immediately
+
+---
+
 ## Scopes reference
 
 | Workflow | Required scopes |
@@ -176,6 +190,8 @@ After promoting, consider re-running evaluations on the updated dataset to measu
 | A - Score inputs | `live-evaluations:read`, `live-evaluations:execute` |
 | B - Error analysis | `datasets:read`, `datasets:write`, `error-analysis:execute` |
 | C - Review and promote | `review:read`, `review:write` |
+| D - Template path (`list_templates`) | `datasets:read` |
+| D - Template path (`provision_template`) | `datasets:write` |
 
 If a tool returns "Missing required scope", the API key used for the MCP connection needs those scopes added. Keys are managed in Truesight Settings.
 

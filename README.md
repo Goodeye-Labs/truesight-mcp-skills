@@ -1,4 +1,4 @@
-# truesight-mcp-skills
+# Truesight MCP Skills
 
 Agent skills for the [Truesight MCP](https://truesight.goodeyelabs.com/docs/mcp-integration) -- step-by-step workflow playbooks for scoring inputs, building live evaluations, error analysis, and the review loop.
 

@@ -174,8 +174,8 @@ After promoting, consider re-running evaluations on the updated dataset to measu
 | Workflow | Required scopes |
 |----------|----------------|
 | A - Score inputs | `live-evaluations:read`, `live-evaluations:execute` |
-| C - Error analysis | `datasets:read`, `datasets:write`, `error-analysis:execute` |
-| D - Review and promote | `review:read`, `review:write` |
+| B - Error analysis | `datasets:read`, `datasets:write`, `error-analysis:execute` |
+| C - Review and promote | `review:read`, `review:write` |
 
 If a tool returns "Missing required scope", the API key used for the MCP connection needs those scopes added. Keys are managed in Truesight Settings.
 

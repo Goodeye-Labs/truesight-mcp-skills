@@ -31,11 +31,7 @@ To upgrade:
 
 ### Cursor
 
-[**Add to Cursor**](cursor://anysphere.cursor-deeplink/mcp/install?name=truesight&config=eyJ1cmwiOiJodHRwczovL2FwaS50cnVlc2lnaHQuZ29vZGV5ZWxhYnMuY29tL21jcC8iLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgWU9VUl9BUElfS0VZX0hFUkUifX0=)
-
-Click the link, then replace `YOUR_API_KEY_HERE` with your platform API key in `~/.cursor/mcp.json`.
-
-Or add it manually to `.cursor/mcp.json`:
+Add to `~/.cursor/mcp.json`:
 
 ```json
 {
@@ -50,13 +46,11 @@ Or add it manually to `.cursor/mcp.json`:
 }
 ```
 
+Replace `YOUR_API_KEY_HERE` with your platform API key, then restart Cursor.
+
 ### VS Code (GitHub Copilot)
 
-[**Install in VS Code**](vscode:mcp/install?%7B%22name%22%3A%22truesight%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.truesight.goodeyelabs.com%2Fmcp%2F%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20YOUR_API_KEY_HERE%22%7D%7D) · [**Install in VS Code Insiders**](vscode-insiders:mcp/install?%7B%22name%22%3A%22truesight%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.truesight.goodeyelabs.com%2Fmcp%2F%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20YOUR_API_KEY_HERE%22%7D%7D)
-
-Click a link, then replace `YOUR_API_KEY_HERE` with your platform API key. Requires VS Code 1.99+ with GitHub Copilot enabled.
-
-Or add it manually to `.vscode/settings.json`:
+Requires VS Code 1.99+ with GitHub Copilot enabled. Add to `.vscode/settings.json` (or use **MCP: Add Server** from the Command Palette):
 
 ```json
 {
@@ -72,6 +66,8 @@ Or add it manually to `.vscode/settings.json`:
   }
 }
 ```
+
+Replace `YOUR_API_KEY_HERE` with your platform API key.
 
 ### Claude Code
 

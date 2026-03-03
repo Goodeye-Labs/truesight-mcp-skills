@@ -25,7 +25,7 @@ To upgrade:
 ## Prerequisites
 
 1. A [Truesight](https://truesight.goodeyelabs.com) account
-2. A platform API key — go to **Settings** in Truesight, click **Create Key**, select your scopes, and copy the key
+2. A platform API key: go to **Settings** in Truesight, click **Create Key**, select your scopes, and copy the key
 
 ## Connect the MCP
 
@@ -34,8 +34,6 @@ To upgrade:
 [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.png)](cursor://anysphere.cursor-deeplink/mcp/install?name=truesight&config=eyJ1cmwiOiJodHRwczovL2FwaS50cnVlc2lnaHQuZ29vZGV5ZWxhYnMuY29tL21jcC8iLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgWU9VUl9BUElfS0VZX0hFUkUifX0=)
 
 Click the button, then replace `YOUR_API_KEY_HERE` with your platform API key in `~/.cursor/mcp.json`.
-
-Alternatively, this repo is a [Cursor Marketplace](https://cursor.com/marketplace) plugin — installing it adds the Truesight MCP server and both skills to Cursor in one step (then replace `YOUR_API_KEY_HERE` in `~/.cursor/mcp.json`).
 
 Or add it manually to `.cursor/mcp.json`:
 
@@ -56,7 +54,7 @@ Or add it manually to `.cursor/mcp.json`:
 
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode)](vscode:mcp/install?%7B%22name%22%3A%22truesight%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.truesight.goodeyelabs.com%2Fmcp%2F%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20YOUR_API_KEY_HERE%22%7D%7D) [![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Server-24bfa5?style=flat-square&logo=visualstudiocode)](vscode-insiders:mcp/install?%7B%22name%22%3A%22truesight%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.truesight.goodeyelabs.com%2Fmcp%2F%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20YOUR_API_KEY_HERE%22%7D%7D)
 
-Click a button, then replace `YOUR_API_KEY_HERE` with your platform API key. Requires VS Code 1.99+ with GitHub Copilot enabled.
+Click a button to install, then replace `YOUR_API_KEY_HERE` with your platform API key. Requires VS Code 1.99+ with GitHub Copilot enabled.
 
 Or add it manually to `.vscode/settings.json`:
 
@@ -129,7 +127,7 @@ Save and click **Refresh** (or restart Windsurf).
 | Skill | What it does |
 |-------|-------------|
 | [`truesight-mcp`](./skills/truesight-mcp/SKILL.md) | Decision tree + playbooks for scoring inputs (A), error analysis (B), and the review-and-promote loop (C) |
-| [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy a new live evaluation from scratch — includes `judgment_configs` schema reference and mandatory `api_key` storage guidance |
+| [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy a new live evaluation from scratch. Includes `judgment_configs` schema reference and mandatory `api_key` storage guidance |
 
 ### Install skills manually
 
@@ -157,10 +155,10 @@ curl -fsSL https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/m
 
 Once the MCP is connected and skills are installed, your AI assistant will automatically pick up the right skill based on what you ask:
 
-- **"Score these inputs against my quality eval"** — triggers `truesight-mcp`, Workflow A
-- **"Analyze the errors in my dataset"** — triggers `truesight-mcp`, Workflow B
-- **"Review and promote these flagged results"** — triggers `truesight-mcp`, Workflow C
-- **"Create an evaluation for response quality"** — triggers `create-evaluation`
+- **"Score these inputs against my quality eval"**: triggers `truesight-mcp`, Workflow A
+- **"Analyze the errors in my dataset"**: triggers `truesight-mcp`, Workflow B
+- **"Review and promote these flagged results"**: triggers `truesight-mcp`, Workflow C
+- **"Create an evaluation for response quality"**: triggers `create-evaluation`
 
 ## License
 

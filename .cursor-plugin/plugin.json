@@ -10,5 +10,5 @@
   "homepage": "https://truesight.goodeyelabs.com/docs/mcp-integration",
   "repository": "https://github.com/Goodeye-Labs/truesight-mcp-skills",
   "license": "MIT",
-  "keywords": ["truesight", "mcp", "evaluations", "ai-quality", "llm-evals", "error-analysis"]
+  "keywords": ["truesight", "mcp", "evaluations", "ai-quality", "llm-evals", "error-analysis", "evals", "llm", "judge"]
 }

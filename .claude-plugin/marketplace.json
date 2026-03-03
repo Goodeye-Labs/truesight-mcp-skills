@@ -1,0 +1,19 @@
+{
+  "name": "goodeye-labs-truesight",
+  "metadata": {
+    "description": "Truesight MCP server and skills for AI evaluation workflows"
+  },
+  "owner": {
+    "name": "Goodeye Labs",
+    "email": "hello@goodeyelabs.com"
+  },
+  "plugins": [
+    {
+      "name": "truesight",
+      "source": "./",
+      "description": "MCP server and agent skills for Truesight AI evaluation platform. Score inputs, build evaluations, analyze errors, and review results through natural language.",
+      "category": "productivity",
+      "tags": ["truesight", "mcp", "evaluations", "ai-quality", "llm-evals", "error-analysis", "evals", "llm", "judge"]
+    }
+  ]
+}

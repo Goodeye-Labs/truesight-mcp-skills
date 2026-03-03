@@ -4,6 +4,24 @@ Agent skills and Cursor plugin for the [Truesight MCP](https://truesight.goodeye
 
 Works with Claude Code, Cursor, and any client that supports the [agent skills standard](https://agentskills.io/specification).
 
+## Install as a Claude plugin
+
+In Claude Code, run:
+
+```bash
+# Step 1: Register this repository as a marketplace
+/plugin marketplace add Goodeye-Labs/truesight-mcp-skills
+
+# Step 2: Install the plugin
+/plugin install truesight@goodeye-labs-truesight
+```
+
+To upgrade:
+
+```bash
+/plugin update truesight@goodeye-labs-truesight
+```
+
 ## Prerequisites
 
 1. A [Truesight](https://truesight.goodeyelabs.com) account

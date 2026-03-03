@@ -23,25 +23,42 @@ Produce all of the following in one flow:
 - Avoid asking implementation-detail questions unless they change product intent.
 - Infer technical defaults and execute.
 
-## Start from a Template (Fastest Path)
+## Interactive Q&A protocol (mandatory)
 
-Before going through the full from-scratch workflow below, first call `list_templates` to check whether a pre-built template already covers the use case.
+<HARD-GATE>
+Do NOT call template provisioning tools, create datasets, deploy evaluations, generate cURLs, or produce a companion skill until scoping is complete and the user explicitly approves the scoped evaluation design.
+</HARD-GATE>
 
-**Template workflow:**
+## Anti-pattern: "This is obvious, skip questions"
 
-1. `list_templates` -- discover available templates; each result includes a `slug`, `name`, and `use_case` description
-2. `provision_template(slug)` -- creates a private dataset copy for the user with pre-labeled rows and judgment configs already configured; returns `{ dataset_id }`
-3. `create_and_deploy_evaluation(dataset_id)` -- deploys the live eval from that dataset; capture the returned `api_key` immediately (it is only shown once)
-4. `run_eval` with `live_evaluation_id` and `inputs` -- start scoring right away
+Do not skip the interactive scoping loop, even when the use case seems simple. Fast assumption-heavy execution creates weak criteria and poor downstream behavior. Keep the dialogue short when possible, but do not skip it.
 
-**Available templates** (as of early 2026):
+## Checklist (complete in order)
 
-- AI Writing Detection: `ai-vocabulary-overuse`, `em-dash-overuse`
-- Code Quality: `function-naming`, `variable-naming`
+You MUST complete each item in order:
 
-The provisioned dataset is the user's own private copy -- they can add rows, tweak judgment criteria, and redeploy at any time to customize.
+1. **Initial framing** -- restate the use case and intended operator outcome.
+2. **Clarifying dialogue** -- ask one question at a time; prefer multiple-choice when possible.
+3. **Approach options** -- propose 2-3 decomposition options with trade-offs and recommendation.
+4. **Design approval loop** -- present these sections and get approval after each section:
+   - Quality dimensions
+   - Pass/fail boundaries and strictness
+   - Operational usage pattern (gate, rank, revise loop, monitor)
+5. **Build authorization checkpoint** -- ask for explicit go-ahead before any MCP build or deploy action.
+6. **Implementation and verification** -- execute from-scratch flow, verify, then deliver artifacts.
 
-If no template matches the use case, proceed with the full from-scratch workflow below.
+## Dialogue rules
+
+- Ask exactly one clarifying question per message during scoping.
+- Prefer structured multiple-choice prompts with lettered options when practical; use open-ended questions only when needed.
+- If the user response is ambiguous, ask one follow-up question before moving forward.
+- Keep questions focused on quality intent, failure cost, and decision thresholds.
+
+## Quick trial redirect
+
+If the user wants a quick trial or does not yet have a strong evaluation concept, route to `bootstrap-template-evaluation` instead of running this skill.
+
+Use `create-evaluation` for from-scratch evaluation design and deployment.
 
 ---
 
@@ -56,6 +73,33 @@ Ask questions that define quality, not plumbing. Cover:
 
 Do not ask about dataset schema, API structure, key storage, or endpoint wiring unless the user explicitly wants custom handling.
 
+## Criterion quality standard
+
+For each proposed quality dimension:
+
+- Make it atomic: one dimension per criterion.
+- Use strict binary pass/fail boundaries by default.
+- Define explicit fail conditions, not just pass intent.
+- Include at least one borderline example in scoping discussion when ambiguity risk is high.
+- Prefer code-based checks for objective constraints and reserve LLM judgment for interpretive criteria.
+
+Avoid holistic criteria like "is this good?" or "is this helpful?" without concrete boundaries.
+
+## Real traces first, synthetic fallback only when needed
+
+Default to real traces from user workflows whenever available.
+
+Only propose synthetic data generation if real traces are missing or too sparse to scope quality dimensions.
+
+When synthetic fallback is needed:
+
+1. Define 2-4 dimensions of variation tied to expected failure modes.
+2. Draft tuple combinations and confirm realism with the user.
+3. Generate additional tuples and convert each to natural-language traces.
+4. Filter unrealistic traces before using them for scoping.
+
+Synthetic traces are a bootstrap aid, not a replacement for production traces.
+
 ## Synthesis step
 
 After scoping, return:
@@ -64,7 +108,7 @@ After scoping, return:
 - Criterion text for each eval with explicit pass/fail boundary
 - Intended usage pattern for eval outputs in downstream workflow
 
-Request one approval checkpoint before build.
+Get explicit user approval on the scoped design before build.
 
 ## Build step (Truesight MCP)
 

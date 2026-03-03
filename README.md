@@ -16,6 +16,8 @@ In Claude Code, run:
 /plugin install truesight@goodeye-labs-truesight
 ```
 
+This installs the Truesight plugin and its MCP skills in Claude, including `truesight-workflows`, `create-evaluation`, and companion workflow skills.
+
 To upgrade:
 
 ```bash
@@ -122,39 +124,49 @@ Save and click **Refresh** (or restart Windsurf).
 
 | Skill | What it does |
 |-------|-------------|
-| [`truesight-mcp`](./skills/truesight-mcp/SKILL.md) | Decision tree + playbooks for scoring inputs (A), error analysis (B), and the review-and-promote loop (C) |
-| [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy a new live evaluation from scratch. Includes `judgment_configs` schema reference and mandatory `api_key` storage guidance |
+| [`truesight-workflows`](./skills/truesight-workflows/SKILL.md) | Strict orchestrator that routes to the correct Truesight MCP skill based on user intent |
+| [`evaluate-trace`](./skills/evaluate-trace/SKILL.md) | Evaluate one or more inputs against an existing live evaluation, with optional handoff to review flows |
+| [`error-analysis`](./skills/error-analysis/SKILL.md) | Analyze traces in datasets, label failure modes, consolidate categories, and prioritize fixes |
+| [`review-and-promote-traces`](./skills/review-and-promote-traces/SKILL.md) | Review flagged traces, submit judgments, and promote judged items back to datasets |
+| [`bootstrap-template-evaluation`](./skills/bootstrap-template-evaluation/SKILL.md) | Provision a template dataset and deploy a live evaluation quickly |
+| [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy new custom live evaluations from scratch |
+| [`eval-audit`](./skills/eval-audit/SKILL.md) | Audit evaluation workflow maturity and return severity-ranked findings with next-skill actions |
+| [`build-review-interface`](./skills/build-review-interface/SKILL.md) | Build a custom web annotation interface when Truesight web UI is not the preferred review surface |
 
 ### Install skills manually
+
+If you installed via Claude Marketplace above, you can skip manual skill installation. Use the manual commands below only when you want to install skill files directly.
 
 #### Project-level (recommended for team workflows)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills/truesight-mcp/SKILL.md \
-  -o .claude/skills/truesight-mcp/SKILL.md --create-dirs
-
-curl -fsSL https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills/create-evaluation/SKILL.md \
-  -o .claude/skills/create-evaluation/SKILL.md --create-dirs
+BASE=https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills
+for skill in truesight-workflows evaluate-trace error-analysis review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
+  curl -fsSL "$BASE/$skill/SKILL.md" -o ".claude/skills/$skill/SKILL.md" --create-dirs
+done
 ```
 
 #### Global (available in all projects)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills/truesight-mcp/SKILL.md \
-  -o ~/.claude/skills/truesight-mcp/SKILL.md --create-dirs
-
-curl -fsSL https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills/create-evaluation/SKILL.md \
-  -o ~/.claude/skills/create-evaluation/SKILL.md --create-dirs
+BASE=https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills
+for skill in truesight-workflows evaluate-trace error-analysis review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
+  curl -fsSL "$BASE/$skill/SKILL.md" -o "$HOME/.claude/skills/$skill/SKILL.md" --create-dirs
+done
 ```
 
 ## Usage
 
 Once the MCP is connected and skills are installed, your AI assistant will automatically pick up the right skill based on what you ask:
 
-- **"Score these inputs against my quality eval"**: triggers `truesight-mcp`, Workflow A
-- **"Analyze the errors in my dataset"**: triggers `truesight-mcp`, Workflow B
-- **"Review and promote these flagged results"**: triggers `truesight-mcp`, Workflow C
+- **"I need help choosing the right Truesight workflow"**: triggers `truesight-workflows`
+- **"Evaluate these traces against my live eval"**: triggers `evaluate-trace`
+- **"Analyze the errors in my dataset"**: triggers `error-analysis`
+- **"Review and promote these flagged results"**: triggers `review-and-promote-traces`
+- **"Bootstrap a live eval from a template"**: triggers `bootstrap-template-evaluation`
 - **"Create an evaluation for response quality"**: triggers `create-evaluation`
+- **"Audit my eval setup and tell me what is missing"**: triggers `eval-audit`
+- **"Help me build a custom annotation interface for trace review"**: triggers `build-review-interface`
 
 ## License
 

@@ -9,11 +9,15 @@ Use this skill to design and implement a stack-agnostic custom trace review web 
 
 ## Interactive Q&A protocol (mandatory)
 
+<HARD-GATE>
+BEFORE the first scoping question, search for a structured question tool (e.g., `AskUserQuestion` or similar interactive widget) and load it. Use that tool for EVERY scoping question. Fall back to plain-text lettered options ONLY if no such tool exists in the environment.
+</HARD-GATE>
+
 Start with custom web UI scoping questions.
 
 Rules:
 - Ask one question at a time.
-- Prefer lettered options.
+- Use the structured question tool for every question. Structure each with a short header, 2-4 options with labels and descriptions, and place the recommended option first. Do not add "(Recommended)" or similar annotations to option labels.
 - Ask one follow-up when requirements are ambiguous.
 
 Example question:

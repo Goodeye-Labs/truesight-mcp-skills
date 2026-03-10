@@ -25,7 +25,11 @@ Do not execute deep workflow steps here unless the user already asked for a very
 
 ## Interactive Q&A protocol (mandatory)
 
-When user intent is unclear, ask one question at a time and use lettered options whenever practical so the assistant can use structured selection widgets.
+<HARD-GATE>
+BEFORE the first scoping question, search for a structured question tool (e.g., `AskUserQuestion` or similar interactive widget) and load it. Use that tool for EVERY scoping question. Fall back to plain-text lettered options ONLY if no such tool exists in the environment.
+</HARD-GATE>
+
+When user intent is unclear, ask one question at a time using the structured question tool (loaded per the HARD-GATE above). Structure each with a short header, options with labels and descriptions, and place the recommended option first. Do not add "(Recommended)" or similar annotations to option labels.
 
 Question format:
 

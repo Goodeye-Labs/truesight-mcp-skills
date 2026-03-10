@@ -9,9 +9,13 @@ Use this skill when a pre-built template likely covers the target use case.
 
 ## Interactive Q&A protocol (mandatory)
 
-If template choice is ambiguous, ask one question at a time with lettered options.
+<HARD-GATE>
+BEFORE the first scoping question, search for a structured question tool (e.g., `AskUserQuestion` or similar interactive widget) and load it. Use that tool for EVERY scoping question. Fall back to plain-text lettered options ONLY if no such tool exists in the environment.
+</HARD-GATE>
 
-Example:
+If template choice is ambiguous, ask one question at a time using the structured question tool (loaded per the HARD-GATE above).
+
+Example question structure:
 
 ```
 Which template family best matches your goal?
@@ -22,7 +26,7 @@ C) Unsure, list all templates first
 
 Rules:
 - Ask one question per message.
-- Prefer lettered options.
+- Use the structured question tool for every question. Structure each with a short header, 2-4 options with labels and descriptions, and place the recommended option first. Do not add "(Recommended)" or similar annotations to option labels.
 - Ask one follow-up only when needed.
 
 ## Workflow

@@ -9,9 +9,13 @@ Guide the user through trace-grounded failure analysis and dataset labeling.
 
 ## Interactive Q&A protocol (mandatory)
 
-Ask one question at a time with lettered options whenever practical.
+<HARD-GATE>
+BEFORE the first scoping question, search for a structured question tool (e.g., `AskUserQuestion` or similar interactive widget) and load it. Use that tool for EVERY scoping question. Fall back to plain-text lettered options ONLY if no such tool exists in the environment.
+</HARD-GATE>
 
-Example:
+Ask one question at a time using the structured question tool (loaded per the HARD-GATE above).
+
+Example question structure:
 
 ```
 Which data source should we analyze first?
@@ -22,7 +26,7 @@ C) Unsure, list datasets first
 
 Rules:
 - One question per message during setup.
-- Prefer lettered options.
+- Use the structured question tool for every question. Structure each with a short header, 2-4 options with labels and descriptions, and place the recommended option first. Do not add "(Recommended)" or similar annotations to option labels.
 - Ask one follow-up if response is ambiguous.
 
 ## Core workflow

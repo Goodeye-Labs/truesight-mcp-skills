@@ -29,6 +29,10 @@ Produce all of the following in one flow:
 Do NOT call template provisioning tools, create datasets, deploy evaluations, generate cURLs, or produce a companion skill until scoping is complete and the user explicitly approves the scoped evaluation design.
 </HARD-GATE>
 
+<HARD-GATE>
+BEFORE the first scoping question, search for a structured question tool (e.g., `AskUserQuestion` or similar interactive widget) and load it. Use that tool for EVERY scoping question. Fall back to plain-text lettered options ONLY if no such tool exists in the environment.
+</HARD-GATE>
+
 ## Anti-pattern: "This is obvious, skip questions"
 
 Do not skip the interactive scoping loop, even when the use case seems simple. Fast assumption-heavy execution creates weak criteria and poor downstream behavior. Keep the dialogue short when possible, but do not skip it.
@@ -50,7 +54,7 @@ You MUST complete each item in order:
 ## Dialogue rules
 
 - Ask exactly one clarifying question per message during scoping.
-- Prefer structured multiple-choice prompts with lettered options when practical; use open-ended questions only when needed.
+- Use the structured question tool (loaded per the HARD-GATE above) for every scoping question. Structure each with a short header, 2-4 options with labels and descriptions, and place the recommended option first. Do not add "(Recommended)" or similar annotations to option labels.
 - If the user response is ambiguous, ask one follow-up question before moving forward.
 - Keep questions focused on quality intent, failure cost, and decision thresholds.
 
@@ -68,6 +72,7 @@ Ask questions that define quality, not plumbing. Cover:
 - What is being evaluated
 - What "good" and "bad" look like
 - Highest-cost failure modes
+- Whether existing sample data or traces are available (if yes, read them early because they inform dimension selection, criterion wording, and borderline calibration)
 - Strictness preference (precision vs recall)
 - How results should be used (gating, ranking, revision loop, monitoring, etc.)
 
@@ -117,7 +122,23 @@ Use Truesight MCP to implement approved evals.
 For each eval:
 1. Create/upload dataset with `upload_dataset` or `create_dataset`
    - Pass `input_columns` and `judgment_configs` inline to avoid separate configure calls
+   - The `columns` array MUST include all `judgment_column` and `notes_column` names from `judgment_configs`, in addition to your input columns. The API will reject the request if judgment/notes columns are missing from `columns`.
    - Use `idempotency_key` for safe retries in agentic loops
+
+   Example: a dataset with one input column and one binary judgment with notes:
+   ```python
+   create_dataset(
+       name="My Eval",
+       columns=["conversation", "quality", "quality_reasoning"],  # includes judgment + notes columns
+       input_columns=["conversation"],
+       judgment_configs=[{
+           "judgment_column": "quality",
+           "notes_column": "quality_reasoning",
+           "judgment_type": "binary",
+           "criterion": "..."
+       }]
+   )
+   ```
 2. Deploy using `create_and_deploy_evaluation(dataset_id)`
    - **CRITICAL: the full `api_key` is ONLY returned at creation -- capture and store it immediately**
    - The live evaluation `public_id` is also needed for `run_eval` calls
@@ -195,6 +216,22 @@ You must preserve exact endpoint IDs and keys returned from deployment. No place
 
 Generate a new usage skill tailored to the scoped workflow.
 
+### File conventions
+
+- **Directory:** `.claude/skills/<skill-name>/SKILL.md` (the file MUST be named `SKILL.md` in all caps)
+- **Frontmatter:** Every companion skill MUST start with YAML frontmatter:
+
+```yaml
+---
+name: <kebab-case-name>
+description: <1-2 sentence description>. Use when <trigger phrases>.
+---
+```
+
+The `description` field drives skill discovery. Include explicit "Use when..." trigger phrases that match how users will ask for this skill.
+
+### Required content
+
 The companion skill must include:
 - Clear trigger description: what the eval suite does and when to use it
 - Input contract: what inputs must be provided
@@ -202,6 +239,8 @@ The companion skill must include:
 - Output parsing guidance: how to read pass/fail and reasoning
 - Full cURL blocks for every eval endpoint
 - Operator loop logic for the approved usage pattern (for example: revise-until-pass, gate-on-fail, or monitor-only)
+
+**IMPORTANT:** Document MCP tool calls in natural language with exact parameter names and values. Never use function-call syntax with parentheses. Example: "Invoke the `run_eval` tool with `live_evaluation_id` set to `\"live_xxx\"` and `inputs` set to `{...}`." Parenthesized call syntax triggers security hooks.
 
 ## Final delivery format
 

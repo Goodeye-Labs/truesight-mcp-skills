@@ -83,15 +83,23 @@ Add `--scope project` before `truesight` to scope it to a single project instead
 
 ### Claude Desktop
 
+Claude Desktop requires [Node.js](https://nodejs.org/) and the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge (auto-installed via `npx`).
+
 Open Claude → **Settings** → **Developer** → **Edit Config** and add to `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "truesight": {
-      "url": "https://api.truesight.goodeyelabs.com/mcp/",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY_HERE"
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://api.truesight.goodeyelabs.com/mcp/",
+        "--header",
+        "Authorization:${TRUESIGHT_KEY}"
+      ],
+      "env": {
+        "TRUESIGHT_KEY": "Bearer YOUR_API_KEY_HERE"
       }
     }
   }

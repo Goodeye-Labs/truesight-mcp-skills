@@ -125,7 +125,7 @@ For each eval:
    - The `columns` array MUST include all `judgment_column` and `notes_column` names from `judgment_configs`, in addition to your input columns. The API will reject the request if judgment/notes columns are missing from `columns`.
    - Use `idempotency_key` for safe retries in agentic loops
 
-   Example: a dataset with one input column and one binary judgment with notes:
+   Example (text input):
    ```python
    create_dataset(
        name="My Eval",
@@ -139,6 +139,23 @@ For each eval:
        }]
    )
    ```
+
+   Example (image-only input). Use `media_url_column` with `input_columns=[]`. The image column cannot also be an input column:
+   ```python
+   create_dataset(
+       name="My Image Eval",
+       columns=["image_url", "quality", "quality_reasoning"],
+       input_columns=[],
+       media_url_column="image_url",
+       judgment_configs=[{
+           "judgment_column": "quality",
+           "notes_column": "quality_reasoning",
+           "judgment_type": "binary",
+           "criterion": "..."
+       }]
+   )
+   ```
+   At `run_eval` time, pass `inputs={}` and provide the image via the `media_url` parameter.
 2. Deploy using `create_and_deploy_evaluation(dataset_id)`
    - **CRITICAL: the full `api_key` is ONLY returned at creation -- capture and store it immediately**
    - The live evaluation `public_id` is also needed for `run_eval` calls

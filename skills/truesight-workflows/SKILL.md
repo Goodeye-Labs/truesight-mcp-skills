@@ -22,6 +22,7 @@ Do not execute deep workflow steps here unless the user already asked for a very
 - Start quickly from pre-built template -> `bootstrap-template-evaluation`
 - Audit current eval setup and maturity -> `eval-audit`
 - Build custom review web interface -> `build-review-interface`
+- Generate synthetic test data for evaluation -> `generate-synthetic-data`
 
 ## Interactive Q&A protocol (mandatory)
 
@@ -42,6 +43,7 @@ D) Bootstrap from a template
 E) Create a new evaluation from scratch
 F) Audit my eval setup
 G) Build a custom review interface
+H) Generate synthetic test data
 ```
 
 Rules:

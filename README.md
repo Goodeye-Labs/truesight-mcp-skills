@@ -139,6 +139,7 @@ Save and click **Refresh** (or restart Windsurf).
 | [`bootstrap-template-evaluation`](./skills/bootstrap-template-evaluation/SKILL.md) | Provision a template dataset and deploy a live evaluation quickly |
 | [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy new custom live evaluations from scratch |
 | [`eval-audit`](./skills/eval-audit/SKILL.md) | Audit evaluation workflow maturity and return severity-ranked findings with next-skill actions |
+| [`generate-synthetic-data`](./skills/generate-synthetic-data/SKILL.md) | Create diverse synthetic test inputs using dimension-based variation for evaluation bootstrapping |
 | [`build-review-interface`](./skills/build-review-interface/SKILL.md) | Build a custom web annotation interface when Truesight web UI is not the preferred review surface |
 
 ### Install skills manually
@@ -149,7 +150,7 @@ If you installed via Claude Marketplace above, you can skip manual skill install
 
 ```bash
 BASE=https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills
-for skill in truesight-workflows evaluate-trace error-analysis review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
+for skill in truesight-workflows evaluate-trace error-analysis generate-synthetic-data review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
   curl -fsSL "$BASE/$skill/SKILL.md" -o ".claude/skills/$skill/SKILL.md" --create-dirs
 done
 ```
@@ -158,7 +159,7 @@ done
 
 ```bash
 BASE=https://raw.githubusercontent.com/Goodeye-Labs/truesight-mcp-skills/main/skills
-for skill in truesight-workflows evaluate-trace error-analysis review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
+for skill in truesight-workflows evaluate-trace error-analysis generate-synthetic-data review-and-promote-traces bootstrap-template-evaluation create-evaluation eval-audit build-review-interface; do
   curl -fsSL "$BASE/$skill/SKILL.md" -o "$HOME/.claude/skills/$skill/SKILL.md" --create-dirs
 done
 ```
@@ -175,6 +176,7 @@ Once the MCP is connected and skills are installed, your AI assistant will autom
 - **"Create an evaluation for response quality"**: triggers `create-evaluation`
 - **"Audit my eval setup and tell me what is missing"**: triggers `eval-audit`
 - **"Help me build a custom annotation interface for trace review"**: triggers `build-review-interface`
+- **"Generate synthetic test data for my RAG pipeline"**: triggers `generate-synthetic-data`
 
 ## License
 

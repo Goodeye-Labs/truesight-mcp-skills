@@ -41,15 +41,20 @@ Do not skip the interactive scoping loop, even when the use case seems simple. F
 
 You MUST complete each item in order:
 
-1. **Initial framing** -- restate the use case and intended operator outcome.
-2. **Clarifying dialogue** -- ask one question at a time; prefer multiple-choice when possible.
-3. **Approach options** -- propose 2-3 decomposition options with trade-offs and recommendation.
-4. **Design approval loop** -- present these sections and get approval after each section:
+1. **Initial framing.** Restate the use case and intended operator outcome.
+2. **Clarifying dialogue.** Ask one question at a time; prefer multiple-choice when possible.
+3. **Approach options.** Propose 2-3 decomposition options with trade-offs and recommendation.
+4. **Design approval loop.** Present these sections and get approval after each section:
    - Quality dimensions
    - Pass/fail boundaries and strictness
    - Operational usage pattern (gate, rank, revise loop, monitor)
-5. **Build authorization checkpoint** -- ask for explicit go-ahead before any MCP build or deploy action.
-6. **Implementation and verification** -- execute from-scratch flow, verify, then deliver artifacts.
+5. **Seed labeling.** Have the user label a small sample of traces to calibrate the LLM judge (see Seed labeling section below).
+6. **Build authorization checkpoint.** Ask for explicit go-ahead before any MCP build or deploy action.
+7. **Implementation and verification.** Execute from-scratch flow, verify, then deliver artifacts.
+
+<HARD-GATE>
+Every scoping question in the checklist above MUST be asked during the clarifying dialogue. The only exception: skip a question if the user has already explicitly answered it earlier in the conversation. Do not infer answers. Do not skip because the answer seems obvious.
+</HARD-GATE>
 
 ## Dialogue rules
 
@@ -90,20 +95,50 @@ For each proposed quality dimension:
 
 Avoid holistic criteria like "is this good?" or "is this helpful?" without concrete boundaries.
 
-## Real traces first, synthetic fallback only when needed
+## Real traces first, synthetic fallback via generate-synthetic-data
 
 Default to real traces from user workflows whenever available.
 
-Only propose synthetic data generation if real traces are missing or too sparse to scope quality dimensions.
-
-When synthetic fallback is needed:
-
-1. Define 2-4 dimensions of variation tied to expected failure modes.
-2. Draft tuple combinations and confirm realism with the user.
-3. Generate additional tuples and convert each to natural-language traces.
-4. Filter unrealistic traces before using them for scoping.
+If real traces are missing or too sparse to scope quality dimensions, invoke the `generate-synthetic-data` skill. Pass all scoping context already gathered (system type, trace structure, failure modes) so the user is not re-asked.
 
 Synthetic traces are a bootstrap aid, not a replacement for production traces.
+
+## Seed labeling
+
+<HARD-GATE>
+Before building the dataset, the user must label a small sample of traces. These labels improve evaluation accuracy and set the standard for how all remaining traces are labeled. The agent then uses those examples to label all remaining traces. No trace may be uploaded without a pre-filled label and reasoning for every judgment column. Skip this step ONLY if the traces already have both labels AND reasoning in every judgment column.
+</HARD-GATE>
+
+**Step 1: User labels seed traces**
+
+Select the minimum number of traces needed to capture the labeling pattern. Start with 2-3. Only request more if the first batch does not cover enough variation to label the rest confidently. Absolute maximum: 10 traces.
+
+Prioritize the highest-information traces:
+- Borderline cases where pass/fail is genuinely ambiguous
+- Traces that span different failure modes
+- Cases where the criterion wording could be interpreted multiple ways
+
+Avoid obvious pass or obvious fail examples. They add no labeling signal.
+
+For each selected trace, present it to the user using the structured question tool (loaded per the AskUserQuestion HARD-GATE above). For each judgment dimension, ask:
+- The label (Pass/Fail for binary, the category for categorical, the score for continuous)
+- A 1-2 sentence reason explaining why that label applies
+
+Present one trace per message. Do not batch them.
+
+**Step 2: Agent labels remaining traces**
+
+Using the user's seed labels as examples, label all remaining traces with both the judgment value and reasoning for every judgment column. Match the user's labeling style, strictness, and reasoning depth.
+
+After labeling, present a summary to the user for approval:
+- Total traces labeled per judgment value (e.g., "62 Pass, 25 Fail")
+- 2-3 example auto-labeled traces so the user can spot-check quality
+
+If the user flags issues, adjust the labeling approach and re-label. Do not upload until the user approves the distribution and spot-check.
+
+**Step 3: Record labels**
+
+Write all labels (user seed labels and agent-generated labels) into the `judgment_column` and `notes_column` fields for their respective rows.
 
 ## Synthesis step
 
@@ -157,7 +192,7 @@ For each eval:
    ```
    At `run_eval` time, pass `inputs={}` and provide the image via the `media_url` parameter.
 2. Deploy using `create_and_deploy_evaluation(dataset_id)`
-   - **CRITICAL: the full `api_key` is ONLY returned at creation -- capture and store it immediately**
+   - **CRITICAL: the full `api_key` is ONLY returned at creation.** Capture and store it immediately.
    - The live evaluation `public_id` is also needed for `run_eval` calls
 3. Verify endpoint works with a real call
 
@@ -165,7 +200,7 @@ For each eval:
 
 Each `judgment_configs` entry defines one scoring dimension. Pass as a list to `upload_dataset` or `create_dataset`.
 
-**Binary (pass/fail) -- most common:**
+**Binary (pass/fail), the most common type:**
 ```json
 [{
   "judgment_column": "quality",

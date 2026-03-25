@@ -99,7 +99,9 @@ Avoid holistic criteria like "is this good?" or "is this helpful?" without concr
 
 Default to real traces from user workflows whenever available.
 
-If real traces are missing or too sparse to scope quality dimensions, invoke the `generate-synthetic-data` skill. Pass all scoping context already gathered (system type, trace structure, failure modes) so the user is not re-asked.
+<HARD-GATE>
+If fewer than 20 real traces are available, invoke the `generate-synthetic-data` skill to augment the dataset before building. Pass all scoping context already gathered (system type, trace structure, failure modes) so the user is not re-asked. Do NOT proceed to dataset creation or deployment with fewer than 20 traces.
+</HARD-GATE>
 
 Synthetic traces are a bootstrap aid, not a replacement for production traces.
 

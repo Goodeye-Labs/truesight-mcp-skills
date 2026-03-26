@@ -51,13 +51,13 @@ done
 | Skill | What it does |
 |-------|-------------|
 | [`truesight-workflows`](./skills/truesight-workflows/SKILL.md) | Strict orchestrator that routes to the correct Truesight MCP skill based on user intent |
-| [`evaluate-trace`](./skills/evaluate-trace/SKILL.md) | Evaluate one or more inputs against an existing live evaluation, with optional handoff to review flows |
+| [`generate-synthetic-data`](./skills/generate-synthetic-data/SKILL.md) | Create diverse synthetic test inputs using dimension-based variation for evaluation bootstrapping |
 | [`error-analysis`](./skills/error-analysis/SKILL.md) | Analyze traces in datasets, label failure modes, consolidate categories, and prioritize fixes |
-| [`review-and-promote-traces`](./skills/review-and-promote-traces/SKILL.md) | Review flagged traces, submit judgments, and promote judged items back to datasets |
 | [`bootstrap-template-evaluation`](./skills/bootstrap-template-evaluation/SKILL.md) | Provision a template dataset and deploy a live evaluation quickly |
 | [`create-evaluation`](./skills/create-evaluation/SKILL.md) | Scope, build, and deploy new custom live evaluations from scratch |
+| [`evaluate-trace`](./skills/evaluate-trace/SKILL.md) | Evaluate one or more inputs against an existing live evaluation, with optional handoff to review flows |
+| [`review-and-promote-traces`](./skills/review-and-promote-traces/SKILL.md) | Review flagged traces, submit judgments, and promote judged items back to datasets |
 | [`eval-audit`](./skills/eval-audit/SKILL.md) | Audit evaluation workflow maturity and return severity-ranked findings with next-skill actions |
-| [`generate-synthetic-data`](./skills/generate-synthetic-data/SKILL.md) | Create diverse synthetic test inputs using dimension-based variation for evaluation bootstrapping |
 | [`build-review-interface`](./skills/build-review-interface/SKILL.md) | Build a custom web annotation interface when Truesight web UI is not the preferred review surface |
 
 ## Usage

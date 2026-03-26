@@ -76,9 +76,7 @@ Once the MCP is connected and skills are installed, your AI assistant will autom
 
 ## Prerequisites
 
-1. A [Truesight](https://truesight.goodeyelabs.com) account
-
-That's it for most clients. When prompted, sign in with your Truesight account to authorize access. All tools are available based on your account permissions.
+Some skills (like `generate-synthetic-data` and `build-review-interface`) work without any Truesight account. For skills that use the Truesight MCP, you need a free [Truesight](https://truesight.goodeyelabs.com) account. When prompted, sign in to authorize access. All tools are available based on your account permissions.
 
 **Want more control over permissions?** You can also connect using a [Platform API Key](https://truesight.goodeyelabs.com/docs/platform-api-keys) instead. See [Connecting with an API key](#connecting-with-an-api-key) below.
 

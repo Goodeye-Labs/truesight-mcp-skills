@@ -97,7 +97,7 @@ Claude.ai and Claude Desktop share the same connectors, so you only need to set 
 
 ### ChatGPT
 
-1. Go to [**Settings > Apps > Advanced settings**](https://chatgpt.com/#settings/Connectors/Advanced)
+1. Go to [**Settings > Apps > Advanced settings**](https://chatgpt.com/#settings/Connectors/Advanced) and enable **Developer Mode**
 2. Click **Create app**
 3. Enter:
    - **Name:** Truesight
@@ -105,6 +105,8 @@ Claude.ai and Claude Desktop share the same connectors, so you only need to set 
    - **Authentication:** OAuth
 4. Check the confirmation box and click **Create**
 5. When prompted, sign in with your Truesight account to authorize access
+
+**Note:** Developer Mode must stay enabled to use custom connectors in ChatGPT. Conversations with custom connectors show an orange "Developer Mode" indicator.
 
 ### Cursor
 
@@ -125,8 +127,7 @@ Restart Cursor, then sign in with your Truesight account when prompted.
 ### Claude Code
 
 ```bash
-claude mcp add --transport http truesight \
-  https://api.truesight.goodeyelabs.com/mcp/
+claude mcp add --transport http truesight https://api.truesight.goodeyelabs.com/mcp/
 ```
 
 Add `--scope project` before `truesight` to scope it to a single project instead of your user config.

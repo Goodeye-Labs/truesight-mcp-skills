@@ -65,14 +65,14 @@ done
 Once the MCP is connected and skills are installed, your AI assistant will automatically pick up the right skill based on what you ask:
 
 - **"I need help choosing the right Truesight workflow"**: triggers `truesight-workflows`
-- **"Evaluate these traces against my live eval"**: triggers `evaluate-trace`
+- **"Generate synthetic test data for my RAG pipeline"**: triggers `generate-synthetic-data`
 - **"Analyze the errors in my dataset"**: triggers `error-analysis`
-- **"Review and promote these flagged results"**: triggers `review-and-promote-traces`
 - **"Bootstrap a live eval from a template"**: triggers `bootstrap-template-evaluation`
 - **"Create an evaluation for response quality"**: triggers `create-evaluation`
+- **"Evaluate these traces against my live eval"**: triggers `evaluate-trace`
+- **"Review and promote these flagged results"**: triggers `review-and-promote-traces`
 - **"Audit my eval setup and tell me what is missing"**: triggers `eval-audit`
 - **"Help me build a custom annotation interface for trace review"**: triggers `build-review-interface`
-- **"Generate synthetic test data for my RAG pipeline"**: triggers `generate-synthetic-data`
 
 ## Prerequisites
 

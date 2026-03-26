@@ -1,6 +1,6 @@
 # Truesight MCP Skills
 
-Agent skills and Cursor plugin for the [Truesight MCP](https://truesight.goodeyelabs.com/docs/mcp-integration) - step-by-step workflow playbooks for scoring inputs, building live evaluations, error analysis, and the review loop.
+Agent skills and Cursor plugin for the [Truesight MCP](https://truesight.goodeyelabs.com/docs/mcp-integration). Step-by-step workflow playbooks for scoring inputs, building live evaluations, error analysis, and the review loop.
 
 Works with Claude Code, Cursor, and any client that supports the [agent skills standard](https://agentskills.io/specification).
 
@@ -27,13 +27,114 @@ To upgrade:
 ## Prerequisites
 
 1. A [Truesight](https://truesight.goodeyelabs.com) account
-2. A platform API key: go to **Settings** in Truesight, click **Create Key**, select your scopes, and copy the key
+
+That's it for most clients. When prompted, sign in with your Truesight account to authorize access. All tools are available based on your account permissions.
+
+**Want more control over permissions?** You can also connect using a [Platform API Key](https://truesight.goodeyelabs.com/docs/platform-api-keys) instead. See [Connecting with an API key](#connecting-with-an-api-key) below.
 
 ## Connect the MCP
 
+### Claude.ai and Claude Desktop
+
+Claude.ai and Claude Desktop share the same connectors, so you only need to set this up once.
+
+1. Go to [**Customize > Connectors**](https://claude.ai/settings/connectors?modal=add-custom-connector)
+2. Click **Add custom connector**
+3. Enter:
+   - **Name:** Truesight
+   - **URL:** `https://api.truesight.goodeyelabs.com/mcp/`
+4. Click **Add**
+5. When prompted, sign in with your Truesight account to authorize access
+6. Enable the connector in any conversation via the **+** button
+
+### ChatGPT
+
+Requires ChatGPT Pro, Team, Enterprise, or Edu. Developer Mode must be enabled, which shows an orange border around the chat and disables memory.
+
+1. Go to [**Settings > Apps > Advanced settings**](https://chatgpt.com/#settings/Connectors/Advanced) and enable **Developer Mode**
+2. Click **Create app**
+3. Enter:
+   - **Name:** Truesight
+   - **MCP Server URL:** `https://api.truesight.goodeyelabs.com/mcp/`
+   - **Authentication:** OAuth
+4. Check the confirmation box and click **Create**
+5. When prompted, sign in with your Truesight account to authorize access
+
+**Note:** Developer Mode must stay enabled to use custom connectors in ChatGPT. Conversations with custom connectors show an orange "Developer Mode" indicator.
+
 ### Cursor
 
-Add to `~/.cursor/mcp.json`:
+Add to your project's `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "truesight": {
+      "url": "https://api.truesight.goodeyelabs.com/mcp/"
+    }
+  }
+}
+```
+
+Restart Cursor, then sign in with your Truesight account when prompted.
+
+### Claude Code
+
+```bash
+claude mcp add --transport http truesight \
+  https://api.truesight.goodeyelabs.com/mcp/
+```
+
+Add `--scope project` before `truesight` to scope it to a single project instead of your user config.
+
+### VS Code (GitHub Copilot)
+
+Requires VS Code 1.99+ with GitHub Copilot enabled. Add to `.vscode/settings.json` (or use **MCP: Add Server** from the Command Palette):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "truesight": {
+        "url": "https://api.truesight.goodeyelabs.com/mcp/"
+      }
+    }
+  }
+}
+```
+
+Sign in with your Truesight account when prompted.
+
+### Windsurf
+
+Open **Settings** > **Cascade** > **MCP Servers** > **View raw config** and add:
+
+```json
+{
+  "mcpServers": {
+    "truesight": {
+      "serverUrl": "https://api.truesight.goodeyelabs.com/mcp/",
+      "disabled": false
+    }
+  }
+}
+```
+
+Save and click **Refresh** (or restart Windsurf). Sign in with your Truesight account when prompted.
+
+## Connecting with an API key
+
+If you prefer fine-grained control over which tools your AI assistant can use, connect with a [Platform API Key](https://truesight.goodeyelabs.com/docs/platform-api-keys). The scopes you assign to the key determine which tools are available.
+
+1. Go to **Settings** in Truesight
+2. Click **Create Key** in the Truesight API Keys section
+3. Enter a name (e.g., "Claude", "Cursor", or "VS Code")
+4. Select the scopes you need (or select all)
+5. Click **Create** and copy the key immediately (it will not be shown again in full)
+
+Then add the `headers` block to your MCP config. Examples for each client:
+
+**Cursor** (`.cursor/mcp.json`):
 
 ```json
 {
@@ -48,30 +149,7 @@ Add to `~/.cursor/mcp.json`:
 }
 ```
 
-Replace `YOUR_API_KEY_HERE` with your platform API key, then restart Cursor.
-
-### VS Code (GitHub Copilot)
-
-Requires VS Code 1.99+ with GitHub Copilot enabled. Add to `.vscode/settings.json` (or use **MCP: Add Server** from the Command Palette):
-
-```json
-{
-  "mcp": {
-    "servers": {
-      "truesight": {
-        "url": "https://api.truesight.goodeyelabs.com/mcp/",
-        "headers": {
-          "Authorization": "Bearer YOUR_API_KEY_HERE"
-        }
-      }
-    }
-  }
-}
-```
-
-Replace `YOUR_API_KEY_HERE` with your platform API key.
-
-### Claude Code
+**Claude Code:**
 
 ```bash
 claude mcp add --transport http truesight \
@@ -79,13 +157,11 @@ claude mcp add --transport http truesight \
   --header "Authorization: Bearer YOUR_API_KEY_HERE"
 ```
 
-Add `--scope project` before `truesight` to scope it to a single project instead of your user config.
-
-### Claude Desktop
+**Claude Desktop** (`claude_desktop_config.json`):
 
 Claude Desktop requires [Node.js](https://nodejs.org/) and the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge (auto-installed via `npx`).
 
-Open Claude → **Settings** → **Developer** → **Edit Config** and add to `claude_desktop_config.json`:
+Open Claude > **Settings** > **Developer** > **Edit Config** and add:
 
 ```json
 {
@@ -106,11 +182,24 @@ Open Claude → **Settings** → **Developer** → **Edit Config** and add to `c
 }
 ```
 
-Save and restart Claude.
+**VS Code** (`.vscode/settings.json`):
 
-### Windsurf
+```json
+{
+  "mcp": {
+    "servers": {
+      "truesight": {
+        "url": "https://api.truesight.goodeyelabs.com/mcp/",
+        "headers": {
+          "Authorization": "Bearer YOUR_API_KEY_HERE"
+        }
+      }
+    }
+  }
+}
+```
 
-Open **Settings** → **Cascade** → **MCP Servers** → **View raw config** and add:
+**Windsurf:**
 
 ```json
 {
@@ -126,7 +215,9 @@ Open **Settings** → **Cascade** → **MCP Servers** → **View raw config** an
 }
 ```
 
-Save and click **Refresh** (or restart Windsurf).
+Replace `YOUR_API_KEY_HERE` with your actual platform API key and restart your client.
+
+For the full list of available tools, scopes, and troubleshooting tips, see the [MCP Integration docs](https://truesight.goodeyelabs.com/docs/mcp-integration).
 
 ## Skills
 

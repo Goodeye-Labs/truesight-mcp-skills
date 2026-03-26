@@ -1,7 +1,7 @@
 {
   "name": "truesight",
-  "description": "MCP server and agent skills for Truesight AI evaluation platform. Score inputs, build evaluations, analyze errors, and review results through natural language.",
-  "version": "1.0.0",
+  "description": "MCP server and agent skills for the Truesight AI quality platform. Score inputs, build evaluations, analyze errors, and review results through natural language.",
+  "version": "1.1.0",
   "author": {
     "name": "Goodeye Labs"
   },

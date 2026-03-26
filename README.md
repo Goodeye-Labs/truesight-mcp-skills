@@ -97,9 +97,7 @@ Claude.ai and Claude Desktop share the same connectors, so you only need to set 
 
 ### ChatGPT
 
-Requires ChatGPT Pro, Team, Enterprise, or Edu. Developer Mode must be enabled, which shows an orange border around the chat and disables memory.
-
-1. Go to [**Settings > Apps > Advanced settings**](https://chatgpt.com/#settings/Connectors/Advanced) and enable **Developer Mode**
+1. Go to [**Settings > Apps > Advanced settings**](https://chatgpt.com/#settings/Connectors/Advanced)
 2. Click **Create app**
 3. Enter:
    - **Name:** Truesight
@@ -107,8 +105,6 @@ Requires ChatGPT Pro, Team, Enterprise, or Edu. Developer Mode must be enabled, 
    - **Authentication:** OAuth
 4. Check the confirmation box and click **Create**
 5. When prompted, sign in with your Truesight account to authorize access
-
-**Note:** Developer Mode must stay enabled to use custom connectors in ChatGPT. Conversations with custom connectors show an orange "Developer Mode" indicator.
 
 ### Cursor
 
